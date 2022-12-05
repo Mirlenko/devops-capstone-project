@@ -157,6 +157,7 @@ class TestAccountService(TestCase):
         self.assertEqual(data_len, number_of_accounts)
 
     def test_list_no_accounts_returned(self):
+        """It should return empty list, but status code should be 202"""
         zero_accounts = 0
         self._create_accounts(zero_accounts)
         response = self.client.get(BASE_URL)
@@ -164,3 +165,30 @@ class TestAccountService(TestCase):
 
         data_len = len(response.get_json())
         self.assertEqual(data_len, zero_accounts)
+
+    def test_update_account(self):
+        """It should update the contents of the account"""
+
+        # creating an account
+        account = AccountFactory()
+        response = self.client.post(BASE_URL, json=account.serialize())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # updating the account
+        new_account = response.get_json()
+        updated_name = 'John Doe'
+        new_account['name'] = updated_name
+        response = self.client.put(f'{BASE_URL}/{new_account["id"]}', json=new_account)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        updated_account = response.get_json()
+        self.assertEqual(updated_account['name'], updated_name)
+
+    def test_update_account_not_found(self):
+        """It should return the error code that the account is not found"""
+        account_id = 0
+        response = self.client.put(f'{BASE_URL}/{account_id}', content_type='application/json')
+
+        data = response.get_json()
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
