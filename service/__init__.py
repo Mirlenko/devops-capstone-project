@@ -7,6 +7,7 @@ and SQL database
 import sys
 from flask import Flask
 from flask_talisman import Talisman
+from flask_cors import CORS
 from service import config
 from service.common import log_handlers
 
@@ -18,6 +19,9 @@ app.config.from_object(config)
 # By default, Talisman will force all requests to the REST API
 # to use the https:// protocol.
 talisman = Talisman(app)
+
+# Create Flask CORS (Cross-Origin Resource Sharing)
+CORS(app)
 
 # Import the routes After the Flask app is created
 # pylint: disable=wrong-import-position, cyclic-import, wrong-import-order
