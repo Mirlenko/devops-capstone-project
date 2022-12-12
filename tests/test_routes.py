@@ -129,7 +129,7 @@ class TestAccountService(TestCase):
     def test_read_an_account(self):
         """It should return the account info"""
         account = self._create_accounts(1)[0]
-        
+
         # checking that an account was created
         response = self.client.get(f'{BASE_URL}/{account.id}', content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -192,7 +192,6 @@ class TestAccountService(TestCase):
         account_id = 0
         response = self.client.put(f'{BASE_URL}/{account_id}', content_type='application/json')
 
-        data = response.get_json()
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_account(self):
