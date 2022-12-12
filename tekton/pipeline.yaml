@@ -46,7 +46,7 @@ spec:
         name: flake8
       params:
       - name: image
-        value: python:3.9-slim
+        value: "python:3.9-slim"
       - name: args
         value: ["--count", "--max-complexity=10", "--max-line-length=127", "--statistics"]
       runAfter:
@@ -60,9 +60,9 @@ spec:
         name: nose
       params:
       - name: database_uri
-        value: sqlite:///test.db
+        value: "sqlite:///test.db"
       - name: args
-        value: ["-v", "--with-spec", "--spec-color"]
+        value: "-v --with-spec --spec-color"
       runAfter:
         - clone
 
@@ -91,7 +91,7 @@ spec:
       - name: SCRIPT
         value: |
           echo "Updating manifest..."
-          sed -i "s|image-registry.openshift-image-registry.svc:5000/$SN_ICR_NAMESPACE/accounts:1|$(params.build-image)|g" deploy/deployment.yaml
+          sed -i "s|IMAGE_NAME_HERE|$(params.build-image)|g" deploy/deployment.yaml
           cat deploy/deployment.yaml
           echo "Deploying to OpenShift..."
           oc apply -f deploy/

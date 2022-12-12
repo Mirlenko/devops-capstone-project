@@ -62,7 +62,7 @@ spec:
     - name: args
       description: The args to run with nosetests command
       type: string
-      default: -v
+      default: "-v"
     - name: database_uri
       description: The DB to run some tests
       type: string
@@ -77,8 +77,11 @@ spec:
       script: | 
         #!/bin/bash
         set -e
+
+        echo "***** Installing dependencies *****"
         python -m pip install --upgrade pip wheel
         pip install -qr requirements.txt
+
         echo "***** Running nosetests with: $(params.args)"
         nosetests $(params.args)
 ---
